@@ -1,0 +1,177 @@
+*{
+	margin: 0px;
+	padding: 0px;
+}
+
+body{
+	background-color: #FFF;
+}
+
+#puzzle {
+    position: relative;
+    background-color : #333333;
+}
+
+@media all and (max-width: 640px) {
+	body {
+		width: 640px;
+	}
+}
+
+#coords{
+	position: relative;
+	width:80%;
+	margin: 0px auto;
+	height: 30px;
+	border: solid black 1px;
+	background-color:#CCC;
+}
+
+section#stage{
+	-webkit-perspective: 700px;
+	-moz-perspective: 700px;
+	-ms-perspective: 700px;
+	-o-perspective: 700px;
+	perspective: 700px;
+	-webkit-perspective-origin: 50% 50%;
+	-moz-perspective-origin: 50% 50%;
+	-o-perspective-origin: 50% 50%;
+	-ms-perspective-origin: 50% 50%;
+	perspective-origin: 50% 50%;
+	display: block;
+	position: relative;
+	left: 50%;
+	width: 600px;
+	height: 600px;
+	margin: 20px 0px 0px -300px;
+	-webkit-box-reflect:below -120px
+    -webkit-gradient(linear, left top, left bottom, from(transparent),
+    color-stop(0.5, transparent), to(#ffffff));
+}
+
+article#box{
+	-webkit-transform: rotate3d(1,0,0,-40deg);
+	-moz-transform: rotate3d(1,0,0,-40deg);
+	-ms-transform: rotate3d(1,0,0,-40deg);
+	-o-transform:  rotate3d(1,0,0,-40deg);
+	transform:  rotate3d(1,0,0,-40deg);
+	cursor: move;
+	position: relative;
+	margin-top: -177px;
+	margin-left: -125px;
+	position: absolute;
+	top: 50%; 
+	left: 50%;
+	width:300px;
+	height: 300px;
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	-o-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+
+#box section{
+	margin-top: -177px;
+	margin-left: -117px;
+	position: absolute;
+	display: block;
+	overflow: hidden;
+	top: 50%; 
+	left: 50%;
+	-webkit-transform-style: flat;
+	-moz-transform-style: flat;
+	-o-transform-style: flat;
+	transform-style: flat;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	-o-backface-visibility: hidden;
+	backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-box-shadow:inset 0px 0px 15px rgba(0, 0, 0, 0.7);
+	-moz-box-shadow:inset 0px 0px 15px rgba(0, 0, 0, 0.7);
+	-o-box-shadow:inset 0px 0px 15px rgba(0, 0, 0, 0.7);
+	-ms-box-shadow:inset 0px 0px 15px rgba(0, 0, 0, 0.7);
+	box-shadow:inset 0px 0px 15px rgba(0, 0, 0, 0.7);
+}
+
+#front,
+#back{
+	width:300px;
+	height: 300px;
+	-webkit-transform: translate3d(0px, 0px, 150px);
+	-moz-transform: translate3d(0px, 0px, 150px);
+	-o-transform: translate3d(0px, 0px, 150px);
+	transform: translate3d(0px, 0px, 150px);
+	
+}
+
+#top{
+	text-indent: -999px;
+	overflow: hidden;
+	width:300px;
+	height: 300px;
+	-webkit-transform: rotateX(90deg) translate3d(0px, 0px, 150px);
+	-moz-transform: rotateX(90deg) translate3d(0px, 0px, 150px);
+	-o-transform: rotateX(90deg) translate3d(0px, 0px, 150px);
+	-transform: rotateX(90deg) translate3d(0px, 0px, 150px);
+}
+
+#bottom{
+	text-indent: -999px;
+	overflow: hidden;
+	width:300px;
+	height: 300px;
+	-webkit-transform: rotateX(-90deg) translate3d(0px, 0px, 150px);
+	-moz-transform: rotateX(-90deg) translate3d(0px, 0px, 150px);
+	-o-transform: rotateX(-90deg) translate3d(0px, 0px, 150px);
+	-transform: rotateX(-90deg) translate3d(0px, 0px, 150px);
+}
+
+#back{
+	-webkit-transform: rotateY(180deg) translate3d(0px, 0px, 150px);
+	-moz-transform: rotateY(180deg) translate3d(0px, 0px, 150px);
+	-o-transform: rotateY(180deg) translate3d(0px, 0px, 150px);
+	-transform: rotateY(180deg) translate3d(0px, 0px, 150px);
+	
+}
+#left{
+	width: 300px;
+	height: 300px;
+	-webkit-transform: rotateY(-90deg) translate3d(0px, 0px, 150px);
+	-moz-transform: rotateY(-90deg) translate3d(0px, 0px, 150px);
+	-o-transform: rotateY(-90deg) translate3d(0px, 0px, 150px);
+	-transform: rotateY(-90deg) translate3d(0px, 0px, 150px);
+}
+
+#right{
+	width: 300px;
+	height: 300px;
+	-webkit-transform: rotateY(90deg) translate3d(0px, 0px, 150px);
+	-moz-transform: rotateY(90deg) translate3d(0px, 0px, 150px);
+	-o-transform: rotateY(90deg) translate3d(0px, 0px, 150px);
+	-transform: rotateY(90deg) translate3d(0px, 0px, 150px);
+}
+
+#box section *{
+	position: absolute;
+	overflow: hidden;
+	text-indent: -999px;
+}
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0px;
+	margin: 0px;
+	padding: 0px;
+	clear: both;
+	visibility: hidden;
+	overflow:hidden;
+	font-size: 0px;
+}
+
+.clearfix {
+	display: inline-block;
+}
