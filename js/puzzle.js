@@ -4,7 +4,7 @@
         
         this.animating = false;
         this.stage;
-        this.extent = 5;
+        this.extent = 25;
         
         this.image = image;    
         this.target = target;
@@ -36,6 +36,7 @@
         var tileCount = THIS.size;
         var tileSize = boardSize / tileCount;
         var completed = false;
+        var shuffles = 0;
         
         var canvas = document.getElementById(THIS.target);
         this.stage = new createjs.Stage(canvas);
@@ -73,7 +74,7 @@
             }
             
             emptyLoc = boardArr[boardArr.length-1][boardArr.length-1];
-            emptyLoc.bmp.alpha = 0;
+            emptyLoc.bmp.alpha = 0.1;
             
             shuffleTiles(THIS.extent);
 
@@ -97,14 +98,12 @@
         // --------------------------------------------------------------------------
 		// Move Tiles
 		// --------------------------------------------------------------------------
-        function slideTile(target, duration) {
-            
-            duration = duration || 0.6;
+        function slideTile(target) {
             
             if (!completed) {
                 
-                TweenLite.to(target, duration, {x:emptyLoc.bmp.x, y:emptyLoc.bmp.y});
-                TweenLite.to(emptyLoc.bmp, duration, {x:target.x, y:target.y, onComplete:animEnd});                
+                TweenLite.to(target, 0.6, {x:emptyLoc.bmp.x, y:emptyLoc.bmp.y});
+                TweenLite.to(emptyLoc.bmp, 0.6, {x:target.x, y:target.y, onComplete:animEnd});                
 
             }
         }
@@ -127,33 +126,80 @@
 		// --------------------------------------------------------------------------
         function shuffleTiles() {
             
+            var piece;
+            
             for (var i = 0; i < THIS.extent; i++){
                 
                 // choose a random piece next to the empty slot and move it (if it exists)
-				  
+                switch(getRandomInt(0, 3))
+                {
+                    case 0 :
+                        if (emptyLoc.bmp.y > 0){
+                            piece = getPiece(emptyLoc.bmp.x, ((emptyLoc.bmp.y / tileSize) - 1)*tileSize);
+                        }
+                        break;
+                    case 1 :
+                        if ((emptyLoc.bmp.x / tileSize) + 1 < tileCount) {
+                            piece = getPiece(((emptyLoc.bmp.x / tileSize) + 1)*tileSize, emptyLoc.bmp.y);
+                        }
+                        break;
+                    case 2 :
+                        if ((emptyLoc.bmp.y / tileSize) + 1 < tileCount) {
+                            piece = getPiece(emptyLoc.bmp.x, ((emptyLoc.bmp.y / tileSize) + 1)*tileSize);
+                        }
+                        break;
+                    case 3 :
+                        if (emptyLoc.bmp.x > 0) {
+                            piece = getPiece(((emptyLoc.bmp.x / tileSize) - 1)*tileSize, emptyLoc.bmp.y);
+                        }
+                        break;
+                }
                 
-//                var position : Point = getPosition(_hiddenPiece);
-//
-//                switch(NumberUtil.randomIntegerWithinRange(0, 3))
-//                {
-//                    case 0 :
-//                        if (position.y > 0) piece = getPiece(position.x, position.y - 1);
-//                        break;
-//                    case 1 :
-//                        if (position.x + 1 < _difficulty) piece = getPiece(position.x + 1, position.y);
-//                        break;
-//                    case 2 :
-//                        if (position.y + 1 < _difficulty) piece = getPiece(position.x, position.y + 1);
-//                        break;
-//                    case 3 :
-//                        if (position.x > 0) piece = getPiece(position.x - 1, position.y);
-//                        break;
-//                }
-                
+                if (piece){
+                    
+                    var tempPiece = new Object;
+                    tempPiece.x = emptyLoc.bmp.x;
+                    tempPiece.y = emptyLoc.bmp.y;
+                    
+                    emptyLoc.bmp.x = piece.x;
+                    emptyLoc.bmp.y = piece.y;
+                    
+                    piece.x = tempPiece.x;
+                    piece.y = tempPiece.y;
+                    
+                    shuffles ++;
+                    
+                }
                 
             }
             
-            THIS.stage.update();
+            if (shuffles < THIS.extent){
+                
+                THIS.extent = THIS.extent - shuffles;
+                shuffleTiles();
+                
+            }else{
+            
+                THIS.stage.update();   
+                
+            }
+        }
+        
+        function getPiece(posX, posY) {
+            
+            var bmp;
+            
+            for (var i = 0; i < tileCount; ++i) {
+                for (var j = 0; j < tileCount; ++j) {
+
+                    if (boardArr[i][j].bmp.x == posX && boardArr[i][j].bmp.y == posY) {
+                        bmp = boardArr[i][j].bmp;
+                    }    
+                }
+            }
+                        
+            return bmp;
+            
         }
                 
                 
@@ -180,7 +226,7 @@
             return Math.abs(x1 - x2) + Math.abs(y1 - y2);
         }
                 
-        function getRandomInt (min, max) {
+        function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
         

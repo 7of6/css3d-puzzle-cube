@@ -11,20 +11,20 @@
         <script type="text/javascript" src="http://code.createjs.com/easeljs-0.5.0.min.js"></script>
         <script type="text/javascript" src="js/greensock/TweenLite.min.js"></script>
         <script type="text/javascript" src="js/traqball.js"></script>
-        <script type="text/javascript" src="js/Puzzle.js"></script>
+        <script type="text/javascript" src="js/puzzle.js"></script>
         
 		<script type="text/javascript">
             
             $(document).ready(function() {
                                 
-                var puzzle1 = new Puzzle("./img/puzzle1.jpg", "puzzle1", 2);
+                var puzzle1 = new Puzzle("./img/puzzle1.jpg", "puzzle1", 3);
                 var puzzle2 = new Puzzle("./img/puzzle2.jpg", "puzzle2", 3);
-                //var puzzle3 = new Puzzle("./img/puzzle3.jpg", "puzzle3");
-                //var puzzle4 = new Puzzle("./img/puzzle4.jpg", "puzzle4");
-                //var puzzle5 = new Puzzle("./img/puzzle5.jpg", "puzzle5");
-                //var puzzle6 = new Puzzle("./img/puzzle6.jpg", "puzzle6");
+                var puzzle3 = new Puzzle("./img/puzzle3.jpg", "puzzle3", 3);
+                var puzzle4 = new Puzzle("./img/puzzle4.jpg", "puzzle4", 3);
+                var puzzle5 = new Puzzle("./img/puzzle5.jpg", "puzzle5", 3);
+                var puzzle6 = new Puzzle("./img/puzzle6.jpg", "puzzle6", 3);
                 
-                //var traqball_1 = new Traqball({stage: "stage", axis: [1,1,1], angle: 0.75});
+                var traqball_1 = new Traqball({stage: "stage", axis: [1,1,1], angle: 0.75});
              
             });
 						
@@ -33,11 +33,11 @@
 
 <body id="body">
 
-
+<!--
 <canvas id="puzzle1" width="300px" height="300px"></canvas>
 <canvas id="puzzle2" width="300px" height="300px"></canvas>
+-->
 
-<!--
 <section id="stage">
     <article id="box">
         <section id="front">
@@ -60,7 +60,6 @@
         </section>
     </article>
 </section>
--->
     
 </body>
 </html>
