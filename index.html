@@ -8,6 +8,7 @@
 		<link rel='stylesheet' type='text/css' href='css/puzzle.css'>
     
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="http://code.createjs.com/easeljs-0.5.0.min.js"></script>
         <script type="text/javascript" src="js/greensock/TweenLite.min.js"></script>
         <script type="text/javascript" src="js/traqball.js"></script>
         <script type="text/javascript" src="js/Puzzle.js"></script>
@@ -15,10 +16,15 @@
 		<script type="text/javascript">
             
             $(document).ready(function() {
-                //var traqball_1 = new Traqball({stage: "stage", axis: [1,1,1], angle: 0.75});// Handler for .ready() called.
+                                
+                var puzzle1 = new Puzzle("./img/puzzle1.jpg", "puzzle1", 2);
+                var puzzle2 = new Puzzle("./img/puzzle2.jpg", "puzzle2", 3);
+                //var puzzle3 = new Puzzle("./img/puzzle3.jpg", "puzzle3");
+                //var puzzle4 = new Puzzle("./img/puzzle4.jpg", "puzzle4");
+                //var puzzle5 = new Puzzle("./img/puzzle5.jpg", "puzzle5");
+                //var puzzle6 = new Puzzle("./img/puzzle6.jpg", "puzzle6");
                 
-                var puzzle1 = new Puzzle("./img/puzzle1.jpg", "puzzle1");
-                var puzzle2 = new Puzzle("./img/puzzle2.jpg", "puzzle2");
+                //var traqball_1 = new Traqball({stage: "stage", axis: [1,1,1], angle: 0.75});
              
             });
 						
@@ -26,33 +32,35 @@
 	</head>
 
 <body id="body">
-    
+
+
 <canvas id="puzzle1" width="300px" height="300px"></canvas>
 <canvas id="puzzle2" width="300px" height="300px"></canvas>
-   
+
 <!--
 <section id="stage">
     <article id="box">
         <section id="front">
-            <canvas id="puzzle" width="300px" height="300px"></canvas>
+            <canvas id="puzzle1" width="300px" height="300px"></canvas>
         </section>
         <section id="top">
-            <img src="./img/puzzle2.jpg"/>
+            <canvas id="puzzle2" width="300px" height="300px"></canvas>
         </section>
         <section id="bottom">
-            <img src="./img/puzzle3.jpg"/>
+            <canvas id="puzzle3" width="300px" height="300px"></canvas>
         </section>
         <section id="back">
-            <img src="./img/puzzle4.jpg"/>
+            <canvas id="puzzle4" width="300px" height="300px"></canvas>
         </section>
         <section id="left">
-            <img src="./img/puzzle5.jpg"/>
+            <canvas id="puzzle5" width="300px" height="300px"></canvas>
         </section>
         <section id="right">
-            <img src="./img/puzzle6.jpg"/>
+            <canvas id="puzzle6" width="300px" height="300px"></canvas>
         </section>
     </article>
-</section-->
+</section>
+-->
     
 </body>
 </html>
