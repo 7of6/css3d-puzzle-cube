@@ -40,6 +40,10 @@
         
         var canvas = document.getElementById(THIS.target);
         this.stage = new createjs.Stage(canvas);
+        
+        
+        if (createjs.Touch.isSupported()) { createjs.Touch.enable(this.stage); }
+        
         createjs.Ticker.addListener(this);
         createjs.Ticker.setFPS(60);
         
