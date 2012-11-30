@@ -1,65 +1,87 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport" content="width=device-width">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 
-<title>Puzzle Cube</title>
-		<link rel='stylesheet' type='text/css' href='css/puzzle.css'>
-    
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-        <script type="text/javascript" src="http://code.createjs.com/easeljs-0.5.0.min.js"></script>
-        <script type="text/javascript" src="js/greensock/TweenLite.min.js"></script>
-        <script type="text/javascript" src="js/traqball.js"></script>
-        <script type="text/javascript" src="js/puzzle.js"></script>
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/puzzle.css">
+        <link rel="stylesheet" media="only screen and (min-device-width: 1200px)" href="styles/puzzle-enhanced.css" />
+        <link rel="stylesheet" media="only screen and (max-width: 480px)" href="styles/puzzle-mobile.css" />
         
-		<script type="text/javascript">
-            
-            $(document).ready(function() {
-                                
-                var puzzle1 = new Puzzle("./img/puzzle1.jpg", "puzzle1", 3);
-                var puzzle2 = new Puzzle("./img/puzzle2.jpg", "puzzle2", 3);
-                var puzzle3 = new Puzzle("./img/puzzle3.jpg", "puzzle3", 3);
-                var puzzle4 = new Puzzle("./img/puzzle4.jpg", "puzzle4", 3);
-                var puzzle5 = new Puzzle("./img/puzzle5.jpg", "puzzle5", 3);
-                var puzzle6 = new Puzzle("./img/puzzle6.jpg", "puzzle6", 3);
-                
-                var traqball_1 = new Traqball({stage: "stage", axis: [1,1,1], angle: 0.75});
-             
-            });
-						
-		</script>
-	</head>
+        <script src="scripts/vendor/modernizr.min.js"></script>
+        
+        
+    </head>
+    <body>
+    <section id="title"></section>
+        
+    <section id="level-select" class="clearfix">
+        
+        <div id="level1"></div>
+        <div id="level2"></div>
+        <div id="level3"></div>
+        
+    </section>
+        
+        
+    <section id="wrapper">
+    <section id="stage">
+        <article id="box">
+            <section id="front">
+                <canvas id="puzzle1" width="300px" height="300px"></canvas>
+            </section>
+            <section id="top">
+                <canvas id="puzzle2" width="300px" height="300px"></canvas>
+            </section>
+            <section id="bottom">
+                <canvas id="puzzle3" width="300px" height="300px"></canvas>
+            </section>
+            <section id="back">
+                <canvas id="puzzle4" width="300px" height="300px"></canvas>
+            </section>
+            <section id="left">
+                <canvas id="puzzle5" width="300px" height="300px"></canvas>
+            </section>
+            <section id="right">
+                <canvas id="puzzle6" width="300px" height="300px"></canvas>
+            </section>
+        </article>
+    </section>
+    </section>
 
-<body id="body">
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+        <![endif]-->
 
-<!--
-<canvas id="puzzle1" width="300px" height="300px"></canvas>
-<canvas id="puzzle2" width="300px" height="300px"></canvas>
--->
+        <!-- Add your site or application content here -->
 
-<section id="stage">
-    <article id="box">
-        <section id="front">
-            <canvas id="puzzle1" width="300px" height="300px"></canvas>
-        </section>
-        <section id="top">
-            <canvas id="puzzle2" width="300px" height="300px"></canvas>
-        </section>
-        <section id="bottom">
-            <canvas id="puzzle3" width="300px" height="300px"></canvas>
-        </section>
-        <section id="back">
-            <canvas id="puzzle4" width="300px" height="300px"></canvas>
-        </section>
-        <section id="left">
-            <canvas id="puzzle5" width="300px" height="300px"></canvas>
-        </section>
-        <section id="right">
-            <canvas id="puzzle6" width="300px" height="300px"></canvas>
-        </section>
-    </article>
-</section>
-    
-</body>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="scripts/vendor/jquery.min.js"><\/script>')</script>
+        
+        <script type="text/javascript" src="http://code.createjs.com/easeljs-0.5.0.min.js"></script>
+        
+        <script type="text/javascript" src="scripts/vendor/greensock/TweenMax.min.js"></script>
+        
+        <script type="text/javascript" src="scripts/traqball.js"></script>
+        <script type="text/javascript" src="scripts/puzzle.js"></script>
+        <script type="text/javascript" src="scripts/main.js"></script>
+        
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    </body>
 </html>

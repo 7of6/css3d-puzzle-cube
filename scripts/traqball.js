@@ -10,6 +10,10 @@
 
 (function(){
     var userAgent	= navigator.userAgent.toLowerCase(),
+        startEvent = document.createEvent('HTMLEvents'),
+        rotateEvent = document.createEvent('HTMLEvents'),
+        releaseEvent = document.createEvent('HTMLEvents'),
+        fullStopEvent = document.createEvent('HTMLEvents'),
         canTouch 	= "ontouchstart" in window,
         prefix 		= cssPref = "",
         requestAnimFrame, cancelAnimFrame;
@@ -29,7 +33,12 @@
     }else{
         prefix = "";
     }
-    
+
+    startEvent.initEvent("traqballStartRotate", true, true);
+    rotateEvent.initEvent("traqballRotate", true, true);
+    releaseEvent.initEvent("traqballRelease", true, true);
+    fullStopEvent.initEvent("traqballFullStop", true, true);
+
     function bindEvent(target, type, callback, remove){
         //translate events
         var evType 		= type || "touchend",
@@ -79,7 +88,9 @@
          })();
         
     var Traqball = function(confObj){
-        this.config = {};
+        this.config = {
+            stage: document.body
+        };
         this.box = null;
         
         this.setup(confObj);
@@ -87,7 +98,7 @@
     
     Traqball.prototype.disable = function(){
         if(this.box !== null){
-            bindEvent(this.box, 'touchstart', this.evHandlers[0], "remove");
+            bindEvent(this.config.activationArea, 'touchstart', this.evHandlers[0], "remove");
             bindEvent(document, 'touchmove', this.evHandlers[1], "remove");
             bindEvent(document, 'touchend', this.evHandlers[2], "remove");
         }
@@ -95,7 +106,7 @@
     
     Traqball.prototype.activate = function(){
         if(this.box !== null){
-            bindEvent(this.box, 'touchstart', this.evHandlers[0]);
+            bindEvent(this.config.activationArea, 'touchstart', this.evHandlers[0]);
             bindEvent(document, 'touchmove', this.evHandlers[1], "remove");
             bindEvent(document, 'touchend', this.evHandlers[2], "remove");
         }
@@ -118,8 +129,11 @@
             for(var prop in conf){
                 THIS.config[prop] = conf[prop];
                 }
-                
-            stage	= document.getElementById(THIS.config.stage) || document.getElementsByTagname("body")[0];
+
+            if (typeof THIS.config.stage === 'string') {
+                THIS.config.stage = document.getElementById(THIS.config.stage);
+            }
+            stage	= THIS.config.stage;
             pos 	= findPos(stage);
             angle 	= THIS.config.angle || 0;
             impulse	= THIS.config.impulse === false ? false : true;
@@ -140,6 +154,9 @@
                     THIS.box = child;
                     break;
                 }
+            }
+            if (typeof THIS.config.activationArea === 'undefined') {
+                THIS.config.activationArea = THIS.box;
             }
             
             var perspective	= getStyle(stage, prefix+"perspective"),
@@ -177,11 +194,13 @@
                 for(var i = 0, l = startMatrix.length; i<l; i++){
                     startMatrix[i] = parseFloat(startMatrix[i]);
                 }
+                
             }else{
                 axis        = [0,1,0];
                 angle       = 0;
                 startMatrix = calcMatrix(axis, angle);
             }
+            
         
             if(THIS.config.perspective){
                 stage.style[cssPref+"Perspective"] = THIS.config.perspective;
@@ -194,7 +213,7 @@
             }
             
             THIS.box.style[cssPref+"Transform"] = "matrix3d("+ startMatrix+")";
-            bindEvent(THIS.box, 'touchstart', startrotation);
+            bindEvent(THIS.config.activationArea, 'touchstart', startrotation);
             
             THIS.evHandlers = [startrotation, rotate, finishrotation];
         })();
@@ -207,8 +226,10 @@
             mouseDownVect 	= calcZvector(getCoords(e));
             oldTime			= curTime = new Date().getTime();
             oldAngle 		= angle; 
-        
-            bindEvent(THIS.box,'touchstart', startrotation, "remove");
+
+            THIS.box.dispatchEvent(startEvent);
+
+            bindEvent(THIS.config.activationArea,'touchstart', startrotation, "remove");
             bindEvent(document, 'touchmove', rotate);
             bindEvent(document, 'touchend', finishrotation);			
         }
@@ -218,8 +239,11 @@
         
             bindEvent(document, 'touchmove', rotate, "remove");
             bindEvent(document, 'touchend', finishrotation, "remove");
-            bindEvent(THIS.box, 'touchstart', startrotation);
+            bindEvent(THIS.config.activationArea, 'touchstart', startrotation);
             calcSpeed();
+
+            THIS.box.dispatchEvent(releaseEvent);
+
             if( impulse && delta > 0){
                 requestAnimFrame(slide);
             }else if(!(isNaN(axis[0]) || isNaN(axis[1]) || isNaN(axis[2]))) {
@@ -264,7 +288,9 @@
             //Only one thing left to do: Update the position of the box by applying a new transform:
             // 2 transforms will be applied: the current rotation 3d and the start-matrix
             THIS.box.style[cssPref+"Transform"] = "rotate3d("+ axis+","+angle+"rad) matrix3d("+startMatrix+")";
-                                        
+            rotateEvent.data = {axis: axis, angle: angle};
+            THIS.box.dispatchEvent(rotateEvent);
+            
             curTime = new Date().getTime();
         }
     
@@ -287,6 +313,8 @@
             delta = delta > 0 ? delta-decr : 0;
             
             THIS.box.style[cssPref+"Transform"] = "rotate3d("+ axis+","+angle+"rad) matrix3d("+startMatrix+")";
+            rotateEvent.data = {axis: axis, angle: angle};
+            THIS.box.dispatchEvent(rotateEvent);
             
             if (delta === 0){
                 stopSlide();
@@ -298,8 +326,12 @@
         function stopSlide(){
             cancelAnimFrame(slide);
             cleanupMatrix();
+
             oldAngle = angle = 0;
             delta = 0;
+
+            fullStopEvent.data = {matrix: startMatrix};
+            THIS.box.dispatchEvent(fullStopEvent);
         }
         
         //Some stupid matrix-multiplication. 

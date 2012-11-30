@@ -1,0 +1,11 @@
+section#stage{
+	-webkit-box-reflect:below 0px
+    -webkit-gradient(linear, left top, left bottom, from(transparent),
+    color-stop(0.5, transparent), to(#ffffff));
+}
+
+#box section{
+	box-shadow: 0 0 5px rgba(0, 0, 255, 1);
+    -webkit-box-shadow: 0 0 5px rgba(255, 255, 255, 1); 
+    -moz-box-shadow: 0 0 5px rgba(255, 255, 255, 1);
+}

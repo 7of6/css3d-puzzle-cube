@@ -1,4 +1,4 @@
-(function(window){
+(function(){
                 
     var Puzzle = function(image, target, size){
         
@@ -40,7 +40,7 @@
         
         var canvas = document.getElementById(THIS.target);
         this.stage = new createjs.Stage(canvas);
-        
+        this.stage.mouseEnabled = false;
         
         if (createjs.Touch.isSupported()) { createjs.Touch.enable(this.stage); }
         
@@ -56,6 +56,9 @@
         function setupGame() {
             
             var bmp;
+            var cont;
+            var stroke;
+            var highlight;
             
             boardArr = new Array(tileCount);  
             
@@ -64,21 +67,47 @@
                 boardArr[i] = new Array(tileCount);
                 
                 for (var j = 0; j < tileCount; j++) {
-                                        
+                    
+                    cont = new createjs.Container();
+                                                            
                     bmp = new createjs.Bitmap(img);
                     bmp.sourceRect = new createjs.Rectangle(i*tileSize,j*tileSize,tileSize,tileSize);
-                    bmp.onClick = clickHandler;
-                    bmp.x = i*tileSize;
-                    bmp.y = j*tileSize;
-                    THIS.stage.addChild(bmp);
+                    
+                    cont.onPress = clickHandler;
+                    cont.x = i*tileSize;
+                    cont.y = j*tileSize;
+                    
+                    cont.addChild(bmp);
+                    
+                    var g = new createjs.Graphics();
+                    g.setStrokeStyle(1);
+                    g.beginStroke(createjs.Graphics.getRGB(0,0,0));
+                    g.drawRect(0,0,tileSize,tileSize);
+                    
+                    stroke = new createjs.Shape(g);
+                    cont.addChild(stroke);
+                    
+                    var g = new createjs.Graphics();
+                    g.setStrokeStyle(2);
+                    g.beginStroke(createjs.Graphics.getRGB(255,255,255));
+                    g.drawRect(2,2,tileSize-4,tileSize-4);
+                    
+                    highlight = new createjs.Shape(g);
+                    highlight.alpha = 0;
+                    cont.addChild(highlight);
+                    
+                    THIS.stage.addChild(cont);
                     boardArr[i][j] = new Object;
-                    boardArr[i][j].bmp = bmp;
+                    boardArr[i][j].tile = cont;
+                    boardArr[i][j].stroke = stroke;
+                    boardArr[i][j].highlight = highlight;
                         
                 }
             }
             
             emptyLoc = boardArr[boardArr.length-1][boardArr.length-1];
-            emptyLoc.bmp.alpha = 0.1;
+            emptyLoc.tile.alpha = 0;
+            emptyLoc.tile.visible = false;
             
             shuffleTiles(THIS.extent);
 
@@ -90,9 +119,11 @@
 		// --------------------------------------------------------------------------            
         function clickHandler(e) {
             
-            if (!completed){
+            console.log("piece:",e.target.id, e.target.x, e.target.y);
+            
+            if (!completed && !THIS.animating){
                             
-                if (distance(e.target.x / tileSize, e.target.y / tileSize, emptyLoc.bmp.x / tileSize, emptyLoc.bmp.y / tileSize) == 1) {
+                if (distance(e.target.x / tileSize, e.target.y / tileSize, emptyLoc.tile.x / tileSize, emptyLoc.tile.y / tileSize) == 1) {
                     slideTile(e.target);
                     THIS.animating = true;
                 }
@@ -106,8 +137,11 @@
             
             if (!completed) {
                 
-                TweenLite.to(target, 0.6, {x:emptyLoc.bmp.x, y:emptyLoc.bmp.y});
-                TweenLite.to(emptyLoc.bmp, 0.6, {x:target.x, y:target.y, onComplete:animEnd});                
+                var obj = getTile(target);
+                                
+                TweenLite.to(target, 0.4, {x:emptyLoc.tile.x, y:emptyLoc.tile.y});
+                TweenMax.to(obj.highlight, 0.2, {alpha:1, yoyo:true, repeat:1});
+                TweenLite.to(emptyLoc.tile, 0.4, {x:target.x, y:target.y, onComplete:animEnd});    
 
             }
         }
@@ -119,9 +153,34 @@
                 if (completed){
                     console.log("complete");
                     THIS.animating = true;
-                    TweenLite.to(emptyLoc.bmp, 0.6, {alpha:1, onComplete:animEnd});
+                    emptyLoc.tile.visible = true;
+                    
+                    for (var i = 0; i < tileCount; i++) {                
+                        for (var j = 0; j < tileCount; j++) { 
+                            TweenLite.to(boardArr[i][j].stroke, 0.6, {alpha:0});
+                        }
+                    }
+                    
+                    TweenLite.to(emptyLoc.tile, 0.6, {alpha:1, onComplete:animEnd});
                 }
             }
+        }
+                
+        function getTile(target) {
+            
+            var obj;
+            
+            for (var i = 0; i < tileCount; i++) {                
+                for (var j = 0; j < tileCount; j++) {
+                    if (boardArr[i][j].tile === target){
+                        obj = boardArr[i][j];   
+                    }
+                }
+            }
+            
+            
+            return obj;
+            
         }
                 
                 
@@ -138,23 +197,23 @@
                 switch(getRandomInt(0, 3))
                 {
                     case 0 :
-                        if (emptyLoc.bmp.y > 0){
-                            piece = getPiece(emptyLoc.bmp.x, ((emptyLoc.bmp.y / tileSize) - 1)*tileSize);
+                        if (emptyLoc.tile.y > 0){
+                            piece = getPiece(emptyLoc.tile.x, ((emptyLoc.tile.y / tileSize) - 1)*tileSize);
                         }
                         break;
                     case 1 :
-                        if ((emptyLoc.bmp.x / tileSize) + 1 < tileCount) {
-                            piece = getPiece(((emptyLoc.bmp.x / tileSize) + 1)*tileSize, emptyLoc.bmp.y);
+                        if ((emptyLoc.tile.x / tileSize) + 1 < tileCount) {
+                            piece = getPiece(((emptyLoc.tile.x / tileSize) + 1)*tileSize, emptyLoc.tile.y);
                         }
                         break;
                     case 2 :
-                        if ((emptyLoc.bmp.y / tileSize) + 1 < tileCount) {
-                            piece = getPiece(emptyLoc.bmp.x, ((emptyLoc.bmp.y / tileSize) + 1)*tileSize);
+                        if ((emptyLoc.tile.y / tileSize) + 1 < tileCount) {
+                            piece = getPiece(emptyLoc.tile.x, ((emptyLoc.tile.y / tileSize) + 1)*tileSize);
                         }
                         break;
                     case 3 :
-                        if (emptyLoc.bmp.x > 0) {
-                            piece = getPiece(((emptyLoc.bmp.x / tileSize) - 1)*tileSize, emptyLoc.bmp.y);
+                        if (emptyLoc.tile.x > 0) {
+                            piece = getPiece(((emptyLoc.tile.x / tileSize) - 1)*tileSize, emptyLoc.tile.y);
                         }
                         break;
                 }
@@ -162,11 +221,11 @@
                 if (piece){
                     
                     var tempPiece = new Object;
-                    tempPiece.x = emptyLoc.bmp.x;
-                    tempPiece.y = emptyLoc.bmp.y;
+                    tempPiece.x = emptyLoc.tile.x;
+                    tempPiece.y = emptyLoc.tile.y;
                     
-                    emptyLoc.bmp.x = piece.x;
-                    emptyLoc.bmp.y = piece.y;
+                    emptyLoc.tile.x = piece.x;
+                    emptyLoc.tile.y = piece.y;
                     
                     piece.x = tempPiece.x;
                     piece.y = tempPiece.y;
@@ -191,18 +250,18 @@
         
         function getPiece(posX, posY) {
             
-            var bmp;
+            var tile;
             
             for (var i = 0; i < tileCount; ++i) {
                 for (var j = 0; j < tileCount; ++j) {
 
-                    if (boardArr[i][j].bmp.x == posX && boardArr[i][j].bmp.y == posY) {
-                        bmp = boardArr[i][j].bmp;
+                    if (boardArr[i][j].tile.x == posX && boardArr[i][j].tile.y == posY) {
+                        tile = boardArr[i][j].tile;
                     }    
                 }
             }
                         
-            return bmp;
+            return tile;
             
         }
                 
@@ -215,7 +274,7 @@
             for (var i = 0; i < tileCount; ++i) {
                 for (var j = 0; j < tileCount; ++j) {
 
-                    if ((boardArr[i][j].bmp.x / tileSize) != i || (boardArr[i][j].bmp.y / tileSize) != j) {
+                    if ((boardArr[i][j].tile.x / tileSize) != i || (boardArr[i][j].tile.y / tileSize) != j) {
                         flag = false;
                     }
                 }
@@ -227,6 +286,9 @@
 		// Utils
 		// --------------------------------------------------------------------------
         function distance(x1, y1, x2, y2) {
+            
+            console.log(x1, y1, x2, y2, "distance is:", Math.abs(x1 - x2) + Math.abs(y1 - y2));
+            
             return Math.abs(x1 - x2) + Math.abs(y1 - y2);
         }
                 
@@ -238,4 +300,4 @@
     
     window.Puzzle = Puzzle;
     
-})(window);
+})();

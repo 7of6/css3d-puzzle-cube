@@ -1,0 +1,26 @@
+section#stage{
+	left: 50%;
+	width: 300px;
+	height: 300px;
+	margin: 20px 0px 0px -150px;
+}
+
+article#box{
+ 
+    margin-top: -130px;    
+    -webkit-transform: rotate3d(0,1,0,45deg) scale3d(0.7,0.7,0.7);
+    -moz-transform: rotate3d(0,1,0,45deg) scale3d(0.7,0.7,0.7);
+    -ms-transform: rotate3d(0,1,0,45deg) scale3d(0.7,0.7,0.7);
+    -o-transform: rotate3d(0,1,0,45deg) scale3d(0.7,0.7,0.7);
+}
+
+section#title{
+    
+    background:url("../images/tt_sm.png") no-repeat;
+    width:153px;
+    height:60px;
+    position:absolute;
+    left:50%;
+    margin-left:-76px;
+    margin-top:-20px;
+}
