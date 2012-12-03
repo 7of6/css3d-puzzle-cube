@@ -119,7 +119,7 @@
 		// --------------------------------------------------------------------------            
         function clickHandler(e) {
             
-            console.log("piece:",e.target.id, e.target.x, e.target.y);
+            //console.log("piece:",e.target.id, e.target.x, e.target.y);
             
             if (!completed && !THIS.animating){
                             
@@ -151,7 +151,7 @@
             if (!completed){
             checkCompleted();
                 if (completed){
-                    console.log("complete");
+                    //console.log("complete");
                     THIS.animating = true;
                     emptyLoc.tile.visible = true;
                     
@@ -287,7 +287,7 @@
 		// --------------------------------------------------------------------------
         function distance(x1, y1, x2, y2) {
             
-            console.log(x1, y1, x2, y2, "distance is:", Math.abs(x1 - x2) + Math.abs(y1 - y2));
+            //console.log(x1, y1, x2, y2, "distance is:", Math.abs(x1 - x2) + Math.abs(y1 - y2));
             
             return Math.abs(x1 - x2) + Math.abs(y1 - y2);
         }

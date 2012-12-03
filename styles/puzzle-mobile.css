@@ -2,19 +2,19 @@ section#stage{
 	left: 50%;
 	width: 300px;
 	height: 300px;
-	margin: 20px 0px 0px -150px;
+	margin: 0px 0px 0px -150px;
 }
 
 article#box{
  
-    margin-top: -130px;    
+    margin-top: -150px;    
     -webkit-transform: rotate3d(0,1,0,45deg) scale3d(0.7,0.7,0.7);
     -moz-transform: rotate3d(0,1,0,45deg) scale3d(0.7,0.7,0.7);
     -ms-transform: rotate3d(0,1,0,45deg) scale3d(0.7,0.7,0.7);
     -o-transform: rotate3d(0,1,0,45deg) scale3d(0.7,0.7,0.7);
 }
 
-section#title{
+section#logo{
     
     background:url("../images/tt_sm.png") no-repeat;
     width:153px;
@@ -22,5 +22,62 @@ section#title{
     position:absolute;
     left:50%;
     margin-left:-76px;
-    margin-top:-20px;
+    margin-top:0px;
+}
+
+section#level-select{
+    position:absolute;
+    left:50%;
+    width:159px;
+    margin:0 0 0 -78px;
+}
+
+#level1{
+    background-image:none;
+    height:31px;
+    float:none;
+    padding:10px;
+    cursor:pointer;
+}
+
+#level1 .label{
+    background:url("../images/level1.png") no-repeat;
+    width:159px;
+    height:31px;
+}
+
+#level2{
+    background-image:none;
+    height:31px;
+    float:none;
+    padding:10px;
+    cursor:pointer;
+}
+
+#level2 .label{
+    background:url("../images/level2.png") no-repeat;
+    width:159px;
+    height:31px;
+}
+
+#level3{
+    background-image:none;
+    height:31px;
+    float:none;
+    padding:10px;
+    cursor:pointer;
+}
+
+#level3 .label{
+    background:url("../images/level3.png") no-repeat;
+    width:159px;
+    height:31px;
+}
+
+.label {
+    font-family:"OrbitronBold";
+    color:#FFF;
+    font-size:19px;
+    padding: 4px 0 0 46px;
+    margin: 160px 0 0 -16px;
 }

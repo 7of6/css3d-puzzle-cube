@@ -1,42 +1,48 @@
 $(document).ready(function() {
                                     
-    $("#level1").click(function(){
-        console.log("level1");
-        beginGame(3);
+    $("#level1").on("click",function(){
+        fadeOutIntro(3);
     });
     
-    $("#level2").click(function(){
-        console.log("level2");
-        beginGame(4);
+    $("#level2").on("click",function(){
+        fadeOutIntro(4);
     });
     
-    $("#level3").click(function(){
-        console.log("level3");
-        beginGame(5);
+    $("#level3").on("click",function(){
+        fadeOutIntro(5);
     });
              
 });
 
-function beginGame(pieces){
-        
-    var puzzle1 = new Puzzle("./images/puzzle1.jpg", "puzzle1", pieces);
-    var puzzle2 = new Puzzle("./images/puzzle2.jpg", "puzzle2", pieces);
-    var puzzle3 = new Puzzle("./images/puzzle3.jpg", "puzzle3", pieces);
-    var puzzle4 = new Puzzle("./images/puzzle4.jpg", "puzzle4", pieces);
-    var puzzle5 = new Puzzle("./images/puzzle5.jpg", "puzzle5", pieces);
-    var puzzle6 = new Puzzle("./images/puzzle6.jpg", "puzzle6", pieces);
+function fadeOutIntro(levelSelected){
     
-    TweenMax.to($("#level-select"), 0.6, {css:{opacity:0}});
-    $("#stage").css("display","block");
-    $("#title").css("margin-top","-30px");
-    TweenMax.to($("#stage"), 0.6, {css:{opacity:1}});
+    $("#level1").off("click");
+    $("#level2").off("click");
+    $("#level3").off("click");
     
-                
-    var traqball = new Traqball({stage: "stage", activationElement: "wrapper"});
+    TweenMax.to($("#level1"), 0.6, {css:{opacity:0}, delay:0});
+    TweenMax.to($("#level2"), 0.6, {css:{opacity:0}, delay:0.2});
+    TweenMax.to($("#level3"), 0.6, {css:{opacity:0}, delay:0.4, onComplete:beginGame, onCompleteParams:[levelSelected]});
     
-    
+    var puzzle1 = new Puzzle("./images/puzzle1.jpg", "puzzle1", levelSelected);
+    var puzzle2 = new Puzzle("./images/puzzle2.jpg", "puzzle2", levelSelected);
+    var puzzle3 = new Puzzle("./images/puzzle3.jpg", "puzzle3", levelSelected);
+    var puzzle4 = new Puzzle("./images/puzzle4.jpg", "puzzle4", levelSelected);
+    var puzzle5 = new Puzzle("./images/puzzle5.jpg", "puzzle5", levelSelected);
+    var puzzle6 = new Puzzle("./images/puzzle6.jpg", "puzzle6", levelSelected);
+
 }
 
+function beginGame(){
+        
+    $("#level-select").css("opacity",0);
+    $("#level-select").css("display","none");
+    $("#wrapper").css("display","block");
+    TweenMax.to($("#wrapper"), 0.6, {css:{opacity:1}, delay:0.5});
+                        
+    var traqball = new Traqball({stage: "stage", activationElement: "wrapper"});
+    
+}
 
 document.ontouchmove = function(event) {
     event.preventDefault();
